@@ -3,20 +3,19 @@ import { auth, googleProvider } from "../configs/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
-  signOut,
 } from "firebase/auth";
-import { Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { FcGoogle } from "react-icons/fc";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [redirectToHome, setRedirectToHome] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate correctly
 
   const handleSignIn = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      setRedirectToHome(true);
+      navigate("/"); // Use navigate inside the function to redirect
     } catch (error) {
       console.error("Error signing up:", error);
     }
@@ -24,14 +23,8 @@ const SignIn = () => {
 
   const handleSignInWithGoogle = async () => {
     await signInWithPopup(auth, googleProvider);
-    setRedirectToHome(true);
+    navigate("/"); // Use navigate inside the function to redirect
   };
-
-  const handleSignOut = async () => {
-    await signOut(auth);
-  };
-
-  if (redirectToHome) return <Redirect to="/" />;
 
   return (
     <>

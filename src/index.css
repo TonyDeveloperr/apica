@@ -238,7 +238,7 @@ select {
 }
 
 .post-date {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: rgb(41, 41, 41);
   align-self: flex-end;
   margin: 0;

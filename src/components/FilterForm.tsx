@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
-import PrimaryButton from "./PrimaryButton";
 import axios from "axios";
 
 interface City {
@@ -14,84 +13,57 @@ interface County {
   nume: string;
 }
 
-const FilterForm = () => {
-  const [selectedCounty, setSelectedCounty] = useState<string>("");
-  const [selectedCity, setSelectedCity] = useState<string>("");
+interface FilterFormProps {
+  setSelectedCounty: (county: string) => void;
+  setSelectedCity: (city: string) => void;
+}
 
+const FilterForm: React.FC<FilterFormProps> = ({ setSelectedCounty, setSelectedCity }) => {
   const [counties, setCounties] = useState<County[]>([]);
   const [cities, setCities] = useState<string[]>([]);
 
   useEffect(() => {
-    // Fetch counties
     axios
       .get("https://roloca.coldfuse.io/judete")
-      .then((res) => {
-        setCounties(res.data);
-      })
+      .then((res) => setCounties(res.data))
       .catch((error) => console.error("Error fetching counties:", error));
   }, []);
 
-  useEffect(() => {
-    // Find the short name of the selected county
-    const selectedCountyData = counties.find(
-      (county) => county.nume === selectedCounty
-    );
-    if (selectedCountyData) {
-      const shortName = selectedCountyData.auto;
-      // Fetch cities for the selected county
-      axios
-        .get(`https://roloca.coldfuse.io/orase/${shortName}`)
-        .then((res) => {
-          const cityNames = res.data.map((city: City) => city.nume);
-          setCities(cityNames);
-        })
-        .catch((error) => console.error("Error fetching cities:", error));
-    }
-  }, [selectedCounty, counties]);
+  const handleCountyChange = (county: string) => {
+    setSelectedCounty(county);
 
-  useEffect(() => {
-    // Fetch cities for the default selected county when the component mounts
-    if (counties.length > 0) {
-      const defaultCountyData = counties[0]; // Assuming the first county is the default
-      setSelectedCounty(defaultCountyData.nume);
+    const selectedCountyData = counties.find((c) => c.nume === county);
+    if (selectedCountyData) {
+      axios
+        .get(`https://roloca.coldfuse.io/orase/${selectedCountyData.auto}`)
+        .then((res) => setCities(res.data.map((city: City) => city.nume)))
+        .catch((error) => console.error("Error fetching cities:", error));
+    } else {
+      setCities([]);
     }
-  }, [counties]);
+  };
+
+  const handleCityChange = (city: string) => {
+    setSelectedCity(city);
+  };
 
   return (
-    <>
-      <div className="filter-form-container">
-        <div>
-          <Dropdown
-            items={counties.map((county: County) => county.nume)}
-            label="Județ"
-            onSelect={setSelectedCounty}
-            placeholder="...."
-            style={{ marginBottom: "1.5rem" }}
-            id="county-select1"
-          />
-        </div>
-        <div>
-          {" "}
-          <Dropdown
-            items={cities}
-            label="Oraș"
-            onSelect={setSelectedCity}
-            placeholder="...."
-            style={{ marginBottom: "1.5rem" }}
-            id="city-select1"
-          />
-        </div>
-
-        <PrimaryButton
-          style={{
-            marginLeft: "3rem",
-          }}
-          onClick={() => alert("ce faci pui")}
-        >
-          Caută
-        </PrimaryButton>
-      </div>
-    </>
+    <div className="filter-form-container">
+      <Dropdown
+        items={counties.map((county) => county.nume)}
+        label="County"
+        onSelect={handleCountyChange}
+        placeholder="Select a county"
+        id="county-select"
+      />
+      <Dropdown
+        items={cities}
+        label="City"
+        onSelect={handleCityChange}
+        placeholder="Select a city"
+        id="city-select"
+      />
+    </div>
   );
 };
 

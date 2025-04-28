@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
 import axios from "axios";
 import PrimaryButton from "./PrimaryButton";
@@ -7,7 +7,7 @@ import SecondaryButton from "./SecondaryButton";
 
 import { addDoc } from "firebase/firestore";
 
-import { postsCollection } from "../App";
+import { postsCollectionRef } from "../App";
 import PopupMessage from "./PopupMessage";
 
 interface Props {
@@ -85,7 +85,7 @@ const PostUploadDialogue = ({
 
   const onSubmitPost = async () => {
     try {
-      await addDoc(postsCollection, {
+      await addDoc(postsCollectionRef, {
         city: selectedCity,
         county: selectedCounty,
         date: currentDateTime,

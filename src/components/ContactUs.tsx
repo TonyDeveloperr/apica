@@ -1,7 +1,5 @@
-import React from "react";
-
 const ContactUs = () => {
-  return <div>Informatii de contact</div>;
+  return <div>Email: contact@apica.ro</div>;
 };
 
 export default ContactUs;

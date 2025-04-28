@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { MdFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
 
 interface Props {
@@ -31,7 +31,7 @@ const Post = ({
 
   return (
     <div className="post">
-      <p className="post-date">{date}</p>
+      <p className="post-date">Postat pe {date}</p>
       <h1>{title}</h1>
       <div className="tag-container">
         <h3>{county}</h3>

@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import PrimaryButton from "./PrimaryButton";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";  // useNavigate instead of useHistory
 import { PiUserCircleLight } from "react-icons/pi";
 import firebase from "firebase/compat/app";
 import PostUploadDialogue from "./UploadPostDialogue";
 
 interface NavbarProps {
-  user: firebase.User;
+  user: firebase.User | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ user }) => {
-  const history = useHistory();
+  const navigate = useNavigate(); // useNavigate hook instead of useHistory
 
   const handleUserClick = () => {
     if (user) {
       // Redirect to profile page if user is logged in
-      history.push("/profile");
+      navigate("/profile"); // Use navigate instead of history.push
     } else {
       // Redirect to sign-in page if user is not logged in
-      history.push("/sign-in");
+      navigate("/sign-in"); // Use navigate instead of history.push
     }
   };
 
@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
 
   const handleCloseAndSubmit = () => {
     setShowUploadDialogue(false);
-    history.push("/");
+    navigate("/"); // Use navigate instead of history.push
   };
 
   return (
@@ -70,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
             </>
           ) : (
             <button
-              onClick={() => history.push("/sign-in")}
+              onClick={() => navigate("/sign-in")} // Use navigate instead of history.push
               className="signin-btn"
             >
               Conectează-te

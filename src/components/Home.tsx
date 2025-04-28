@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import FilterForm from "./FilterForm";
-import Post from "./Post";
 
-import { getDocs, collection } from "firebase/firestore";
+import Post from "./Post";
 
 interface PostData {
   id: string;
@@ -21,10 +18,9 @@ interface Props {
 
 const Home = ({ postList }: Props) => {
   return (
-    <>
-      <FilterForm />
-      <div className="post-container">
-        {postList.map((post) => (
+    <div className="post-container">
+      {postList.length > 0 ? (
+        postList.map((post) => (
           <Post
             key={post.id}
             title={post.title}
@@ -35,9 +31,12 @@ const Home = ({ postList }: Props) => {
             city={post.city}
             school={post.school}
           />
-        ))}
-      </div>
-    </>
+        ))
+      ) : (
+        <p>No posts match your filters.</p>
+      )}
+    </div>
+    
   );
 };
 
