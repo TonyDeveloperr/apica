@@ -16,7 +16,6 @@ const Post = ({
   description,
   likes,
   date,
-  county,
   city,
   school,
 }: Props) => {
