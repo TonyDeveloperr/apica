@@ -2,16 +2,8 @@ import React, { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
 import citiesData from '../cities.json';
 
-interface City {
-  nume: string;
-  simplu: string;
-  comuna: string;
-}
 
-interface County {
-  auto: string;
-  nume: string;
-}
+
 
 interface FilterFormProps {
   setSelectedCounty: (county: string) => void;
@@ -23,8 +15,7 @@ interface RomanianCity {
   county: string; // Assuming 'county' holds the county name
 }
 
-const FilterForm: React.FC<FilterFormProps> = ({ setSelectedCounty, setSelectedCity }) => {
-  const [counties, setCounties] = useState<County[]>([]);
+const FilterForm: React.FC<FilterFormProps> = ({ setSelectedCity }) => {
   const [cities, setCities] = useState<string[]>([]);
 
   useEffect(() => {
