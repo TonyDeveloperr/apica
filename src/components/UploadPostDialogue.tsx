@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
-import axios from "axios";
 import PrimaryButton from "./PrimaryButton";
 import InputBox from "./InputBox";
 import SecondaryButton from "./SecondaryButton";
-
 import { addDoc } from "firebase/firestore";
-
 import { postsCollectionRef } from "../App";
 import PopupMessage from "./PopupMessage";
+
+import citiesData from '../cities.json'; // Direct import from src folder
 
 interface Props {
   onClose: () => void;
@@ -16,78 +15,42 @@ interface Props {
   toggleUploadDialogue: () => void;
 }
 
-const PostUploadDialogue = ({
-  onClose,
-  refreshPostList,
-  toggleUploadDialogue,
-}: Props) => {
-  interface City {
-    nume: string;
-    simplu: string;
-    comuna: string;
-  }
+interface RomanianCity {
+  city: string;  // Assuming 'city' holds the name of the city
+  county: string; // Assuming 'county' holds the county name
+}
 
-  interface County {
-    auto: string;
-    nume: string;
-  }
-
-  // info for the select tags
-  const [selectedCounty, setSelectedCounty] = useState<string>("");
-  const [selectedCity, setSelectedCity] = useState<string>("Abrud");
-  const [counties, setCounties] = useState<County[]>([]);
+const PostUploadDialogue = ({ onClose, refreshPostList, toggleUploadDialogue }: Props) => {
+  const [selectedCity, setSelectedCity] = useState<string>("Bucuresti");
   const [cities, setCities] = useState<string[]>([]);
 
-  // info from the user
+  // Info from the user
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [school, setSchool] = useState("");
 
   const [currentDateTime, setCurrentDateTime] = useState<string>("");
 
-  const [invalidCredentials, setinvalidCredentials] = useState(false);
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   useEffect(() => {
-    // Fetch counties
-    axios
-      .get("https://roloca.coldfuse.io/judete")
-      .then((res) => {
-        setCounties(res.data);
-      })
-      .catch((error) => console.error("Error fetching counties:", error));
-  }, []);
-
-  useEffect(() => {
-    // Find the short name of the selected county
-    const selectedCountyData = counties.find(
-      (county) => county.nume === selectedCounty
-    );
-    if (selectedCountyData) {
-      const shortName = selectedCountyData.auto;
-      // Fetch cities for the selected county
-      axios
-        .get(`https://roloca.coldfuse.io/orase/${shortName}`)
-        .then((res) => {
-          const cityNames = res.data.map((city: City) => city.nume);
-          setCities(cityNames);
-        })
-        .catch((error) => console.error("Error fetching cities:", error));
+    // Directly use the imported citiesData
+    if (citiesData && Array.isArray(citiesData)) {
+      const citySet = new Set<string>();
+      citiesData.forEach((city: RomanianCity) => {
+        citySet.add(city.city); // Assuming the name of the city is under 'city'
+      });
+      const sortedCities = Array.from(citySet).sort();
+      setCities(sortedCities);
+    } else {
+      console.error("citiesData is not in the expected array format");
     }
-  }, [selectedCounty, counties]);
-
-  useEffect(() => {
-    // Fetch cities for the default selected county when the component mounts
-    if (counties.length > 0) {
-      const defaultCountyData = counties[0]; // Assuming the first county is the default
-      setSelectedCounty(defaultCountyData.nume);
-    }
-  }, [counties]);
+  }, []); // No need to fetch anything, citiesData is already imported
 
   const onSubmitPost = async () => {
     try {
       await addDoc(postsCollectionRef, {
         city: selectedCity,
-        county: selectedCounty,
         date: currentDateTime,
         description: description,
         title: title,
@@ -114,7 +77,7 @@ const PostUploadDialogue = ({
       setCurrentDateTime(formattedDateTime);
     }, 1000);
 
-    return () => clearInterval(intervalId); // Clear interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -136,13 +99,6 @@ const PostUploadDialogue = ({
             id="title-input"
           />
 
-          <Dropdown
-            items={counties.map((county: County) => county.nume)}
-            label="Județ"
-            onSelect={setSelectedCounty}
-            placeholder="...."
-            id="county-dropdown"
-          />
           <Dropdown
             items={cities}
             label="Oraș"
@@ -181,7 +137,7 @@ const PostUploadDialogue = ({
               onClick={() =>
                 title && description && school
                   ? onSubmitPost()
-                  : setinvalidCredentials(true)
+                  : setInvalidCredentials(true)
               }
             >
               Postează

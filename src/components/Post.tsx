@@ -34,7 +34,6 @@ const Post = ({
       <p className="post-date">Postat pe {date}</p>
       <h1>{title}</h1>
       <div className="tag-container">
-        <h3>{county}</h3>
         <h3>{city}</h3>
         <h3>{school}</h3>
       </div>

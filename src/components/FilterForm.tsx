@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
-import axios from "axios";
+import citiesData from '../cities.json';
 
 interface City {
   nume: string;
@@ -18,30 +18,28 @@ interface FilterFormProps {
   setSelectedCity: (city: string) => void;
 }
 
+interface RomanianCity {
+  city: string;  // Assuming 'city' holds the name of the city
+  county: string; // Assuming 'county' holds the county name
+}
+
 const FilterForm: React.FC<FilterFormProps> = ({ setSelectedCounty, setSelectedCity }) => {
   const [counties, setCounties] = useState<County[]>([]);
   const [cities, setCities] = useState<string[]>([]);
 
   useEffect(() => {
-    axios
-      .get("https://roloca.coldfuse.io/judete")
-      .then((res) => setCounties(res.data))
-      .catch((error) => console.error("Error fetching counties:", error));
-  }, []);
-
-  const handleCountyChange = (county: string) => {
-    setSelectedCounty(county);
-
-    const selectedCountyData = counties.find((c) => c.nume === county);
-    if (selectedCountyData) {
-      axios
-        .get(`https://roloca.coldfuse.io/orase/${selectedCountyData.auto}`)
-        .then((res) => setCities(res.data.map((city: City) => city.nume)))
-        .catch((error) => console.error("Error fetching cities:", error));
+    // Directly use the imported citiesData
+    if (citiesData && Array.isArray(citiesData)) {
+      const citySet = new Set<string>();
+      citiesData.forEach((city: RomanianCity) => {
+        citySet.add(city.city); // Assuming the name of the city is under 'city'
+      });
+      const sortedCities = Array.from(citySet).sort();
+      setCities(sortedCities);
     } else {
-      setCities([]);
+      console.error("citiesData is not in the expected array format");
     }
-  };
+  }, []); // No need to fetch anything, citiesData is already imported
 
   const handleCityChange = (city: string) => {
     setSelectedCity(city);
@@ -50,17 +48,10 @@ const FilterForm: React.FC<FilterFormProps> = ({ setSelectedCounty, setSelectedC
   return (
     <div className="filter-form-container">
       <Dropdown
-        items={counties.map((county) => county.nume)}
-        label="County"
-        onSelect={handleCountyChange}
-        placeholder="Select a county"
-        id="county-select"
-      />
-      <Dropdown
         items={cities}
-        label="City"
+        label="Oras"
         onSelect={handleCityChange}
-        placeholder="Select a city"
+        placeholder="Alege un oras"
         id="city-select"
       />
     </div>
