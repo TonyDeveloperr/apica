@@ -1,4 +1,3 @@
-
 import Post from "./Post";
 
 interface PostData {
@@ -33,10 +32,11 @@ const Home = ({ postList }: Props) => {
           />
         ))
       ) : (
-        <p>No posts match your filters.</p>
+        <p style={{ color: "white" }}>
+          Nu exista nicio postare din acest oras...
+        </p>
       )}
     </div>
-    
   );
 };
 

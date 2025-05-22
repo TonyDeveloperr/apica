@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PrimaryButton from "./PrimaryButton";
-import { Link, useNavigate } from "react-router-dom";  // useNavigate instead of useHistory
+import { Link, useNavigate } from "react-router-dom";
 import { PiUserCircleLight } from "react-icons/pi";
 import firebase from "firebase/compat/app";
 import PostUploadDialogue from "./UploadPostDialogue";
@@ -10,15 +10,13 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ user }) => {
-  const navigate = useNavigate(); // useNavigate hook instead of useHistory
+  const navigate = useNavigate();
 
   const handleUserClick = () => {
     if (user) {
-      // Redirect to profile page if user is logged in
-      navigate("/profile"); // Use navigate instead of history.push
+      navigate("/profile");
     } else {
-      // Redirect to sign-in page if user is not logged in
-      navigate("/sign-in"); // Use navigate instead of history.push
+      navigate("/sign-in");
     }
   };
 
@@ -26,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
 
   const handleCloseAndSubmit = () => {
     setShowUploadDialogue(false);
-    navigate("/"); // Use navigate instead of history.push
+    navigate("/");
   };
 
   return (
@@ -50,10 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
             <Link to="/">Postări</Link>
           </li>
           <li>
-            <Link to="/about">Ce este Apica?</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact</Link>
+            <Link to="/about">Ce este APICA</Link>
           </li>
         </ul>
         <div className="user-btns">
@@ -69,10 +64,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
               />
             </>
           ) : (
-            <button
-              onClick={() => navigate("/sign-in")} // Use navigate instead of history.push
-              className="signin-btn"
-            >
+            <button onClick={() => navigate("/sign-in")} className="signin-btn">
               Conectează-te
             </button>
           )}

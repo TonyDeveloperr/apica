@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { auth, googleProvider } from "../configs/firebase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate correctly
+  const navigate = useNavigate();
 
   const handleSignIn = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/"); // Use navigate inside the function to redirect
+      navigate("/");
     } catch (error) {
       console.error("Error signing up:", error);
     }
@@ -23,7 +20,7 @@ const SignIn = () => {
 
   const handleSignInWithGoogle = async () => {
     await signInWithPopup(auth, googleProvider);
-    navigate("/"); // Use navigate inside the function to redirect
+    navigate("/");
   };
 
   return (
@@ -51,8 +48,8 @@ const SignIn = () => {
           <button
             style={{
               display: "flex",
-              alignItems: "center", // Align items vertically in the center
-              justifyContent: "center", // Center content horizontally
+              alignItems: "center",
+              justifyContent: "center",
               textAlign: "center",
             }}
             className="google-login-btn"

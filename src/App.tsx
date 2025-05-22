@@ -11,6 +11,8 @@ import SignIn from "./components/SignIn";
 import FilterForm from "./components/FilterForm";
 import UploadPostDialogue from "./components/UploadPostDialogue";
 
+import { Link, useLocation } from "react-router-dom";
+
 interface PostData {
   id: string;
   title: string;
@@ -32,6 +34,8 @@ const App = () => {
   const [user, setUser] = useState<any>(null);
   const [isUploadDialogueVisible, setIsUploadDialogueVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const location = useLocation();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -56,7 +60,9 @@ const App = () => {
   useEffect(() => {
     const filterPosts = () => {
       const result = postList.filter((post) => {
-        const matchesCounty = selectedCounty ? post.county === selectedCounty : true;
+        const matchesCounty = selectedCounty
+          ? post.county === selectedCounty
+          : true;
         const matchesCity = selectedCity ? post.city === selectedCity : true;
         return matchesCounty && matchesCity;
       });
@@ -75,18 +81,25 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{
+        backgroundColor: location.pathname === "/" ? "#3452d9" : "transparent",
+      }}
+    >
       <Navbar user={user} />
       {isUploadDialogueVisible && (
         <UploadPostDialogue
           onClose={() => setIsUploadDialogueVisible(false)}
-          toggleUploadDialogue={() => setIsUploadDialogueVisible(!isUploadDialogueVisible)}
+          toggleUploadDialogue={() =>
+            setIsUploadDialogueVisible(!isUploadDialogueVisible)
+          }
           refreshPostList={() => setPostList([...postList])}
         />
       )}
       <div className="content">
         {loading ? (
-          <div>Loading...</div>
+          <div style={{ color: "white" }}>Loading...</div>
         ) : (
           <Routes>
             <Route
@@ -107,6 +120,17 @@ const App = () => {
             <Route path="/sign-in" element={<SignIn />} />
           </Routes>
         )}
+      </div>
+      <div className="footer">
+        <Link className="logoFooter" to="/">
+          APICA
+        </Link>
+        <Link className="linkFooter" to="/">
+          Postări
+        </Link>
+        <Link className="linkFooter" to="/about">
+          Ce este APICA
+        </Link>
       </div>
     </div>
   );

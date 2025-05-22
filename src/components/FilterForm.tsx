@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
-import citiesData from '../cities.json';
-
-
-
+import citiesData from "../cities.json";
 
 interface FilterFormProps {
   setSelectedCounty: (county: string) => void;
@@ -11,26 +8,23 @@ interface FilterFormProps {
 }
 
 interface RomanianCity {
-  city: string;  // Assuming 'city' holds the name of the city
-  county: string; // Assuming 'county' holds the county name
+  city: string;
+  county: string;
 }
 
 const FilterForm: React.FC<FilterFormProps> = ({ setSelectedCity }) => {
   const [cities, setCities] = useState<string[]>([]);
 
   useEffect(() => {
-    // Directly use the imported citiesData
     if (citiesData && Array.isArray(citiesData)) {
       const citySet = new Set<string>();
       citiesData.forEach((city: RomanianCity) => {
-        citySet.add(city.city); // Assuming the name of the city is under 'city'
+        citySet.add(city.city);
       });
       const sortedCities = Array.from(citySet).sort();
       setCities(sortedCities);
-    } else {
-      console.error("citiesData is not in the expected array format");
     }
-  }, []); // No need to fetch anything, citiesData is already imported
+  }, []);
 
   const handleCityChange = (city: string) => {
     setSelectedCity(city);
@@ -40,9 +34,9 @@ const FilterForm: React.FC<FilterFormProps> = ({ setSelectedCity }) => {
     <div className="filter-form-container">
       <Dropdown
         items={cities}
-        label="Oras"
+        label="Oraș"
         onSelect={handleCityChange}
-        placeholder="Alege un oras"
+        placeholder="Alege un oraș"
         id="city-select"
       />
     </div>

@@ -7,7 +7,7 @@ import { addDoc } from "firebase/firestore";
 import { postsCollectionRef } from "../App";
 import PopupMessage from "./PopupMessage";
 
-import citiesData from '../cities.json'; // Direct import from src folder
+import citiesData from "../cities.json";
 
 interface Props {
   onClose: () => void;
@@ -16,15 +16,18 @@ interface Props {
 }
 
 interface RomanianCity {
-  city: string;  // Assuming 'city' holds the name of the city
-  county: string; // Assuming 'county' holds the county name
+  city: string;
+  county: string;
 }
 
-const PostUploadDialogue = ({ onClose, refreshPostList, toggleUploadDialogue }: Props) => {
+const PostUploadDialogue = ({
+  onClose,
+  refreshPostList,
+  toggleUploadDialogue,
+}: Props) => {
   const [selectedCity, setSelectedCity] = useState<string>("Bucuresti");
   const [cities, setCities] = useState<string[]>([]);
 
-  // Info from the user
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [school, setSchool] = useState("");
@@ -34,18 +37,15 @@ const PostUploadDialogue = ({ onClose, refreshPostList, toggleUploadDialogue }: 
   const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   useEffect(() => {
-    // Directly use the imported citiesData
     if (citiesData && Array.isArray(citiesData)) {
       const citySet = new Set<string>();
       citiesData.forEach((city: RomanianCity) => {
-        citySet.add(city.city); // Assuming the name of the city is under 'city'
+        citySet.add(city.city);
       });
       const sortedCities = Array.from(citySet).sort();
       setCities(sortedCities);
-    } else {
-      console.error("citiesData is not in the expected array format");
     }
-  }, []); // No need to fetch anything, citiesData is already imported
+  }, []);
 
   const onSubmitPost = async () => {
     try {
@@ -93,7 +93,7 @@ const PostUploadDialogue = ({ onClose, refreshPostList, toggleUploadDialogue }: 
           <h1>Adaugă o postare</h1>
           <InputBox
             longText={false}
-            placeholder="Care este subiectul postarii?"
+            placeholder="Care este subiectul postării?"
             label="Titlu"
             onChange={setTitle}
             id="title-input"
@@ -108,14 +108,14 @@ const PostUploadDialogue = ({ onClose, refreshPostList, toggleUploadDialogue }: 
           />
           <InputBox
             longText={false}
-            placeholder="ex. Scoala gimnaziala..."
-            label="Unitate de invatamant"
+            placeholder="ex. Școala gimnazială..."
+            label="Unitate de învățământ"
             onChange={setSchool}
             id="school-input"
           />
           <InputBox
             longText={true}
-            placeholder="Descrie situatia..."
+            placeholder="Descrie-ți experiența..."
             label="Descriere"
             onChange={setDescription}
             id="description-input"
