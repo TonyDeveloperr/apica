@@ -27,7 +27,7 @@ const SignIn = () => {
     <>
       <div className="login-form-container">
         <div className="login-form">
-          <h1>Conectează-te</h1>
+          <h1 style={{ color: "#3452d9" }}>Conectează-te</h1>
           <input
             onChange={(e) => setEmail(e.target.value)}
             id="email-field"

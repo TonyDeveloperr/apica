@@ -45,10 +45,10 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
         </Link>
         <ul className="links">
           <li>
-            <Link to="/">Postări</Link>
+            <Link to="/about">Ce este APICA</Link>
           </li>
           <li>
-            <Link to="/about">Ce este APICA</Link>
+            <Link to="/posts">Postări</Link>
           </li>
         </ul>
         <div className="user-btns">

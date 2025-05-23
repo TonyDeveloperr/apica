@@ -4,6 +4,7 @@ import { IoMdSchool } from "react-icons/io";
 import { IoGlassesOutline } from "react-icons/io5";
 import { LiaUserSecretSolid } from "react-icons/lia";
 import { CiRead } from "react-icons/ci";
+import { Link } from "react-router-dom";
 
 export const About = () => {
   return (
@@ -18,7 +19,7 @@ export const About = () => {
         <p className="aboutDesc">
           APICA (Asociația Profesorilor Împotriva Corupției și Abuzului) este o
           platformă online ce permite cadrelor didactice să își exprime
-          experiențele plăcute sau mai puțin plăcute la locul de muncă.
+          experiențele.
         </p>
         <img src={image1} alt="" className="aboutPic" />
       </div>
@@ -28,14 +29,18 @@ export const About = () => {
         </h3>
         <IoGlassesOutline size={50} className="aboutIcons" />
         <p className="aboutDesc">
-          Creează un cont gratuit și postează folosind interfața intuitivă!
+          <Link to="/sign-in"> Creează un cont gratuit</Link> și postează
+          folosind interfața intuitivă!
         </p>
         <img id="aboutPic2" src={image2} alt="" className="aboutPic" />
       </div>
 
       <div className="aboutBox">
         <h3 className="aboutPTitle">Citește postările altor profesori</h3>
-        <CiRead size={50} className="aboutIcons" />
+        <Link to="/posts">
+          <CiRead size={50} className="aboutIcons" />
+        </Link>
+
         <p className="aboutDesc">
           Explorează postările altor profesori și află despre școlile
           recomandate. Folosește filtrul pentru a vedea postări doar din anumite

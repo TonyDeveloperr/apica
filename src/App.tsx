@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom"; // ✅ Only import Route and Routes
+import { Route, Routes } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { db, auth } from "./configs/firebase";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import { About } from "./components/About";
-import ContactUs from "./components/ContactUs";
 import Profile from "./components/Profile";
 import SignIn from "./components/SignIn";
 import FilterForm from "./components/FilterForm";
 import UploadPostDialogue from "./components/UploadPostDialogue";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Navigate } from "react-router-dom";
 
 interface PostData {
   id: string;
@@ -102,8 +101,9 @@ const App = () => {
           <div style={{ color: "white" }}>Loading...</div>
         ) : (
           <Routes>
+            <Route path="/" element={<Navigate to="/about" replace />} />
             <Route
-              path="/"
+              path="/posts"
               element={
                 <>
                   <FilterForm
@@ -115,7 +115,6 @@ const App = () => {
               }
             />
             <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<ContactUs />} />
             <Route path="/profile" element={user ? <Profile /> : <SignIn />} />
             <Route path="/sign-in" element={<SignIn />} />
           </Routes>
@@ -125,7 +124,7 @@ const App = () => {
         <Link className="logoFooter" to="/">
           APICA
         </Link>
-        <Link className="linkFooter" to="/">
+        <Link className="linkFooter" to="/posts">
           Postări
         </Link>
         <Link className="linkFooter" to="/about">
