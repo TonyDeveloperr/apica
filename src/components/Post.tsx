@@ -1,32 +1,38 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { MdFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../configs/firebase";
 
 interface Props {
+  id: string;
   title: string;
   description: string;
   likes: number;
   date: string;
-  county: string;
   city: string;
   school: string;
 }
 
-const Post = ({
-  title,
-  description,
-  likes,
-  date,
-  city,
-  school,
-}: Props) => {
+const Post = ({ id, title, description, likes, date, city, school }: Props) => {
   const [liked, setLiked] = useState(false);
-
-  const handleLike = () => {
-    liked ? setCurrentLikes(likes) : setCurrentLikes(likes + 1);
-    setLiked(!liked);
-  };
-
   const [currentLikes, setCurrentLikes] = useState(likes);
+
+  const handleLike = async () => {
+    const newLiked = !liked;
+    const newLikes = newLiked ? currentLikes + 1 : currentLikes - 1;
+
+    try {
+      const postDocRef = doc(db, "posts", id);
+      await updateDoc(postDocRef, {
+        likes: newLikes,
+      });
+
+      setLiked(newLiked);
+      setCurrentLikes(newLikes);
+    } catch (error) {
+      console.error("Error updating likes:", error);
+    }
+  };
 
   return (
     <div className="post">

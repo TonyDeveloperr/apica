@@ -22,11 +22,11 @@ const Home = ({ postList }: Props) => {
         postList.map((post) => (
           <Post
             key={post.id}
+            id={post.id}
             title={post.title}
             description={post.description}
             likes={post.likes}
             date={post.date}
-            county={post.county}
             city={post.city}
             school={post.school}
           />

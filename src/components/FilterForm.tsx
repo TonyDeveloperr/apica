@@ -9,7 +9,6 @@ interface FilterFormProps {
 
 interface RomanianCity {
   city: string;
-  county: string;
 }
 
 const FilterForm: React.FC<FilterFormProps> = ({ setSelectedCity }) => {

@@ -18,14 +18,15 @@ export const About = () => {
         <IoMdSchool size={50} className="aboutIcons" />
         <p className="aboutDesc">
           APICA (Asociația Profesorilor Împotriva Corupției și Abuzului) este o
-          platformă online ce permite cadrelor didactice să își exprime
-          experiențele.
+          platformă online ce permite cadrelor didactice, părinților și elevilor
+          să își exprime părerile despre educație.
         </p>
         <img src={image1} alt="" className="aboutPic" />
       </div>
       <div className="aboutBox">
         <h3 className="aboutPTitle">
-          Postează-ți experiențele în calitate de cadru didactic
+          Postează-ți experiențele în calitate de cadru didactic, părinte sau
+          elev
         </h3>
         <IoGlassesOutline size={50} className="aboutIcons" />
         <p className="aboutDesc">
@@ -36,15 +37,15 @@ export const About = () => {
       </div>
 
       <div className="aboutBox">
-        <h3 className="aboutPTitle">Citește postările altor profesori</h3>
+        <h3 className="aboutPTitle">Citește postările altor utilizatori</h3>
         <Link to="/posts">
           <CiRead size={50} className="aboutIcons" />
         </Link>
 
         <p className="aboutDesc">
-          Explorează postările altor profesori și află despre școlile
-          recomandate. Folosește filtrul pentru a vedea postări doar din anumite
-          orașe.
+          Explorează postările altor profesori, părinți sau elevi și află despre
+          școlile recomandate. Folosește filtrul pentru a vedea postări doar din
+          anumite orașe.
         </p>
         <img src="" alt="" className="aboutPic" />
       </div>
